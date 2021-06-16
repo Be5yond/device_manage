@@ -2,6 +2,9 @@ from sanic import Blueprint, response
 from sanic.views import HTTPMethodView
 import qrcode
 from .model import Device, History, db
+import pathlib
+static_path = pathlib.Path(__file__).parent.parent/'static'
+print(static_path)
 
 
 bp = Blueprint("device_manage", url_prefix="/device/api")
@@ -77,8 +80,8 @@ async def history_handler(request, id):
 def qrcode_handler(request, id):
     url = f'{request.scheme}://{request.host}/device/page/borrow.html?id={id}'
     img = qrcode.make(url)
-    img.save('./static/img/qrcode.png')
-    return response.file('./static/img/qrcode.png', mime_type="image/png")
+    img.save(static_path/'qrcode.png')
+    return response.file(static_path/'qrcode.png', mime_type="image/png")
 
 
 bp.add_route(DeviceView.as_view(), '/device/<id>')
