@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>设备管理</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  <link rel="stylesheet" href="sdk\sdk.css" />
+  <style>
+    html,
+    body,
+    .app-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root" class="app-wrapper"></div>
+  <script src="sdk\sdk.js"></script>
+  <script type="text/javascript">
+    (function () {
+      let amis = amisRequire('amis/embed');
+      // 设备管理页面
+      let amisScoped = amis.embed('#root',
+        {
+          "type": "page",
+          "toolbar": [
+          ],
+          "body": [
+            {
+              "type": "crud",
+              "api": "${host}/device/api/device?os=${os}&type=${type}&version=${version}&screen=${screen}",
+              "name": "sheet",
+              // 控制面板
+              "filter": {
+                "title": "筛选",
+                "submitText": "",
+                "controls": [
+                  {
+                    "placeholder": "设备类型",
+                    "type": "select",
+                    "name": "type",
+                    "options": [
+                      {
+                        "label": "Pad",
+                        "value": "Pad"
+                      },
+                      {
+                        "label": "Phone",
+                        "value": "Phone"
+                      }
+                    ]
+                  },
+                  {
+                    "placeholder": "系统",
+                    "type": "select",
+                    "name": "os",
+                    "options": [
+                      {
+                        "label": "Android",
+                        "value": "Android"
+                      },
+                      {
+                        "label": "IOS",
+                        "value": "IOS"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "name": "version",
+                    "placeholder": "版本"
+                  },
+                  {
+                    "type": "text",
+                    "name": "screen",
+                    "placeholder": "屏幕"
+                  },
+                  {
+                    "label": "搜索",
+                    "type": "button",
+                    "level": "light",
+                    "actionType": "submit",
+                    "className": "m-b-sm",
+                    "icon": "fa fa-search pull-left",
+                  },
+                  {
+                    "label": "新增",
+                    "type": "button",
+                    "actionType": "dialog",
+                    "level": "primary",
+                    "className": "m-b-sm pull-right",
+                    "icon": "fa fa-plus pull-left",
+                    "dialog": {
+                      "size": "xl",
+                      "title": "新建一条数据",
+                      "body": {
+                        "type": "form",
+                        "api": "post:${host}/device/api/device",
+                        "controls": [
+                          {
+                            "type": "group",
+                            "controls": [
+                              {
+                                "placeholder": "设备类型",
+                                "type": "select",
+                                "name": "type_",
+                                "value": "Phone",
+                                "label": "设备类型",
+                                "options": [
+                                  {
+                                    "label": "Pad",
+                                    "value": "Pad"
+                                  },
+                                  {
+                                    "label": "Phone",
+                                    "value": "Phone"
+                                  }
+                                ]
+                              },
+                              {
+                                "placeholder": "系统",
+                                "type": "select",
+                                "name": "os",
+                                "label": "系统类型",
+                                "options": [
+                                  {
+                                    "label": "Android",
+                                    "value": "Android"
+                                  },
+                                  {
+                                    "label": "IOS",
+                                    "value": "IOS"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "group",
+                            "controls": [
+                              {
+                                "type": "text",
+                                "name": "model",
+                                "label": "设备型号"
+                              },
+                              {
+                                "type": "text",
+                                "name": "version",
+                                "label": "系统版本"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "group",
+                            "controls": [
+                              {
+                                "type": "text",
+                                "name": "owner",
+                                "label": "所有者"
+                              },
+                              {
+                                "type": "text",
+                                "name": "user",
+                                "label": "使用者"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "group",
+                            "controls": [
+                              {
+                                "type": "text",
+                                "name": "serial",
+                                "label": "设备编号"
+                              },
+                              {
+                                "label": "成色",
+                                "type": "select",
+                                "name": "condition",
+                                "value": 10,
+                                "options": [
+                                  {
+                                    "label": "全新",
+                                    "value": 10
+                                  },
+                                  {
+                                    "label": "八成新",
+                                    "value": 8
+                                  },
+                                  {
+                                    "label": "五成新",
+                                    "value": 5
+                                  },
+                                  {
+                                    "label": "损坏",
+                                    "value": 0
+                                  }
+                                ]
+                              },
+                            ]
+                          },
+                        ]
+                      }
+                    }
+                  },
+                ]
+              },
+              // 表格列表
+              "columns": [
+                {
+                  "name": "serial",
+                  "label": "序列号"
+                },
+                {
+                  "name": "type_",
+                  "label": "类型"
+                },
+                {
+                  "name": "os",
+                  "label": "OS"
+                },
+                {
+                  "name": "version",
+                  "label": "版本"
+                },
+                {
+                  "name": "model",
+                  "label": "型号",
+                },
+                // {
+                //   "name": "fitting",
+                //   "label": "配件"
+                // },
+                {
+                  "name": "owner",
+                  "label": "所有者"
+                },
+                {
+                  "name": "user",
+                  "label": "使用者"
+                },
+                {
+                  "name": "since",
+                  "label": "since"
+                },
+                {
+                  "name": "condition",
+                  "label": "设备状态"
+                },
+                // 修改
+                {
+                  "type": "operation",
+                  "label": "操作",
+                  // "width": 100,
+                  "buttons": [
+                    {
+                      "label": "编辑",
+                      "type": "button",
+                      "actionType": "dialog",
+                      "level": "success",
+                      "className": "m-b-sm pull-left",
+                      "icon": "fa fa-plus pull-left",
+                      "dialog": {
+                        "size": "xl",
+                        "title": "",
+                        "body": {
+                          "type": "form",
+                          "api": "put:${host}/device/api/device/${id}",
+                          "controls": [
+                            {
+                              "type": "group",
+                              "controls": [
+                                {
+                                  "label": "设备类型",
+                                  "type": "select",
+                                  "name": "type_",
+                                  "value": "Phone",
+                                  "options": [
+                                    {
+                                      "label": "Pad",
+                                      "value": "Pad"
+                                    },
+                                    {
+                                      "label": "Phone",
+                                      "value": "Phone"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "label": "系统类型",
+                                  "type": "select",
+                                  "name": "os",
+                                  "options": [
+                                    {
+                                      "label": "Android",
+                                      "value": "Android"
+                                    },
+                                    {
+                                      "label": "IOS",
+                                      "value": "IOS"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "group",
+                              "controls": [
+                                {
+                                  "type": "text",
+                                  "name": "model",
+                                  "label": "设备型号"
+                                },
+                                {
+                                  "type": "text",
+                                  "name": "version",
+                                  "label": "系统版本"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "group",
+                              "controls": [
+                                {
+                                  "type": "text",
+                                  "name": "owner",
+                                  "label": "所有者"
+                                },
+                                {
+                                  "type": "text",
+                                  "name": "user",
+                                  "label": "使用者"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "group",
+                              "controls": [
+                                {
+                                  "type": "text",
+                                  "name": "serial",
+                                  "label": "设备编号"
+                                },
+                                {
+                                  "label": "成色",
+                                  "type": "select",
+                                  "name": "condition",
+                                  "value": 10,
+                                  "options": [
+                                    {
+                                      "label": "全新",
+                                      "value": 10
+                                    },
+                                    {
+                                      "label": "八成新",
+                                      "value": 8
+                                    },
+                                    {
+                                      "label": "五成新",
+                                      "value": 5
+                                    },
+                                    {
+                                      "label": "损坏",
+                                      "value": 0
+                                    }
+                                  ]
+                                },
+                              ]
+                            },
+                            ,
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "label": "历史",
+                      "level": "secondary",
+                      "icon": "fa fa-history pull-left",
+                      "actionType": "link",
+                      "link": "/device/page/history.html?id=${id}"
+                    },
+                    {
+                      "type": "button",
+                      "label": "借还",
+                      "level": "primary",
+                      "icon": "fa fa-map-signs pull-left",
+                      "actionType": "link",
+                      "link": "/device/page/borrow.html?id=${id}"
+                    },
+                    {
+                      "type": "button",
+                      "label": "二维码",
+                      "level": "light",
+                      "icon": "fa fa-qrcode pull-left",
+                      "actionType": "link",
+                      "link": "/device/api/qrcode/${id}"
+                    },
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      );
+    })();
+  </script>
+</body>
+
+</html>
