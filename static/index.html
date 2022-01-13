@@ -31,6 +31,7 @@
       let amisScoped = amis.embed('#root',
         {
           "type": "page",
+          "initApi": "/device/api/host",
           "toolbar": [
           ],
           "body": [
@@ -215,6 +216,10 @@
               },
               // 表格列表
               "columns": [
+                {
+                  "name": "id",
+                  "label": "ID"
+                },
                 {
                   "name": "serial",
                   "label": "序列号"
@@ -401,8 +406,19 @@
                       "label": "二维码",
                       "level": "light",
                       "icon": "fa fa-qrcode pull-left",
-                      "actionType": "link",
-                      "link": "/device/api/qrcode/${id}"
+                      // "actionType": "link",
+                      // "link": "/device/api/qrcode/${id}"
+                      "actionType": "dialog",
+                      "dialog": {
+                        "title": "设备二维码，扫描可跳转到借还操作界面",
+                        "size": "sm",
+                        "closeOnEsc": true,
+                        "body": {
+                          "type": "qr-code",
+                          "codeSize": 128,
+                          "value": "http://${host}/device/page/borrow.html?id=${id}"
+                        }
+                      }
                     },
                   ]
                 }

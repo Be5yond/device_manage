@@ -83,6 +83,10 @@ def qrcode_handler(request, id):
     img.save(static_path/'qrcode.png')
     return response.file(static_path/'qrcode.png', mime_type="image/png")
 
+@bp.get('/host')
+def host_handler(request):
+    return amis_response({"host": request.host})
+
 
 bp.add_route(DeviceView.as_view(), '/device/<id>')
 bp.add_route(DeviceListView.as_view(), '/device')
